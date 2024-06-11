@@ -1,0 +1,39 @@
+{
+    "daily": [
+        {
+            "date": "07.06.2024",
+            "total_minutes": 38 
+        },
+        {
+            "date": "10.06.2024",
+            "total_minutes": 45
+        },
+        {
+            "date": "11.06.2024",
+            "total_minutes": 22
+        }
+    ],
+
+    "refinements": [
+        {
+            "date": "07.06.2024",
+            "break": 0,
+            "total_hour": 2,
+            "notes": [
+                "aralik olmayinca sonrasinda uzun bir ara vermek gerekiyor",
+                "2 saat toplanti aslinda 1 saat 40dk surmeli aralarla birlikte"
+            ]
+        },
+        {
+            "date": "11.06.2024",
+            "break": "0",
+            "total_hour": "2",
+            "notes": [
+                "ilk 20dk hic bir dev konusmadi, ilgilendiren bir konu olmadi,",
+				"tekrar araliksiz 2 saat"
+            ]
+        }
+    ]
+}
+
+
