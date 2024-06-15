@@ -3,6 +3,7 @@ package table
 import (
 	"github.com/evertras/bubble-table/table"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type Model struct {
@@ -80,10 +81,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
+	var view string
+	var header string
 	if m.selectTable.GetFocused() {
-		return m.selectTable.View()
+		view = m.selectTable.View()
+		header = "select table to view.\npress enter to select.\npress q or ctrl + c to quit."
+	} else {
+		header = "table: " + m.selectTable.GetVisibleRows()[m.selectedIndex].Data[ColumnKeyTableName].(string) + "\npress esc to go back to table selector\npress q or ctrl + c to quit."
+		view = m.tables[m.selectedIndex].View()
 	}
-	return m.tables[m.selectedIndex].View()
+	return lipgloss.JoinVertical(lipgloss.Left, header, view)
+	
 }
 
 

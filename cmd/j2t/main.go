@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -13,6 +12,7 @@ import (
 	bTable "github.com/evertras/bubble-table/table"
 	"github.com/karataymarufemre/j2t/internal/config"
 	"github.com/karataymarufemre/j2t/internal/table"
+	"github.com/iancoleman/orderedmap"
 )
 
 
@@ -22,7 +22,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(conf.FilePath)
 
 	b, err := os.ReadFile(conf.FilePath)
 
@@ -30,17 +29,19 @@ func main() {
         fmt.Print(err)
     }
 
-	datas := []table.TableData{}	
+	datas := []table.TableData{}
 
-	var f interface{}
-	err = json.Unmarshal(b, &f)
-	m := f.(map[string]interface{})
-	for k, v := range m {
+	o := orderedmap.New()
+	o.UnmarshalJSON(b)
+	
+
+	for _, k := range o.Keys() {
+		v, _ := o.Get(k)
     	switch vv := v.(type) {
 		case []interface{}:
 			t := table.NewTableData(k)
         	for _, u := range vv {
-				mm := u.(map[string]interface{})
+				mm := u.(orderedmap.OrderedMap)
 				t.ReadJsonObj(mm)
         	}
 			datas = append(datas, *t)
@@ -55,11 +56,11 @@ func main() {
 			table.ColumnKeyId: fmt.Sprint(i),
 			table.ColumnKeyTableName: v.Name(),
 		}))
-		tables = append(tables, *newTableModels(v))
+
+		tables = append(tables, v.NewTableModels(true).WithPageSize(8))
 	}
 
 	selectTable := table.SelectTable.WithRows(rows).Focused(true)
-	fmt.Println(selectTable.GetVisibleRows()[0].Data[table.ColumnKeyTableName])
 	model := table.New(selectTable, tables)
 
 	if _, err := tea.NewProgram(model).Run(); err != nil {
@@ -74,13 +75,4 @@ var baseStyle = lipgloss.NewStyle().
 	BorderStyle(lipgloss.NormalBorder()).
 	BorderForeground(lipgloss.Color("240"))
 
-func newTableModels(tab table.TableData) *bTable.Model {
 
-	b := bTable.New(tab.Columns()).
-		WithRows(tab.Rows()).
-		Focused(false).
-		WithMultiline(true).
-		WithPageSize(30)
-
-	return &b
-}
