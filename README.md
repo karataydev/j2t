@@ -22,3 +22,5 @@ run the executable with -i (-input) flag and give your json path
     bin/j2t -i input.json
 ```
 
+
+<img alt="Welcome to VHS" src="https://raw.githubusercontent.com/karataymarufemre/j2t/main/metadata/out.gif" width="1000" />
