@@ -2,7 +2,9 @@ j2t
 =======
 
 
-view json lists as table in command line.
+view json lists as table in command line. 
+
+written using @charmbracelet/bubbletea and @evertras/bubble-table library
 
 ## Install
 
